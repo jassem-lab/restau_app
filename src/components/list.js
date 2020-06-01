@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Card from './card' ; 
 const arr =[
   {
@@ -28,48 +28,33 @@ const arr =[
   }
 ]
 
- class List extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      list : arr
-    }
-  }
-  
-  deleteDish = (id) =>{
-    this.setState({list : this.state.list.filter((el)=>el.id!==id)})
-  }
-
-   render(){
+ const List = (props) => {
  
-              // FOR METHOD
-    // let newArray = [] 
-    // for (let i = 0; i<arr.length; i++){
-    //   newArray.push(<Card dish={arr[i].dish} img={arr[i].img} price={arr[i].price} />)
-    // }
+  const [list, setList] = useState(arr); 
 
-    // return newArray
-
-              // FOREACH METHOD
-
-  //   let newArray = [] 
-  //   arr.forEach((element , index)=>{
-  //       newArray.push(<Card dish={element.dish} 
-  //         img={element.img} price ={element.price} />)
-  //   });
-  // return newArray
   
 
-              // MAP METHOD 
+  const deleteDish = (id) =>{
+    setList(list.filter((el)=>el.id!== id))
+  
+  }
+ 
+  const modifyDish = (item) =>{
+    setList(list.map((element, index)=>
+      element.id===item.id?element=item:element
+    ))
+    console.log('item from list component', item) ; 
 
- return this.state.list.map((element , index)=>
+  }
+
+ return (list.length===0?<div style={{marginTop : 20, fontSize : 16}}>No items</div>:list.map((element , index)=>
  <Card 
   key={element.id}
   item={element}
-  deleteDish={this.deleteDish}
+  deleteDish={deleteDish}
+  modifyDish={modifyDish}
   />
- )             
-   }
+ ))        
 }
 
 export default List; 
